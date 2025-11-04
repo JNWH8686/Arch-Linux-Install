@@ -6,7 +6,7 @@
 
 ## 1. Introduction
 
-I'm Johnathan Harrington, and this documentation outlines the process I followed to install and configure **Arch Linux** inside VM Workstation Pro 17.6.4 for CYB-3353-01. This document also serves as a reference for reproducing my setup, if needed, and includes comments on any difficulties encountered.
+This documentation outlines the process I followed to install and configure **Arch Linux** inside VM Workstation Pro 17.6.4 for CYB-3353-01. This document also serves as a reference for reproducing my setup, if needed, and includes comments on any difficulties encountered.
 
 ---
 
