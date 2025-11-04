@@ -45,7 +45,16 @@ When the Arch Linux screen pops up, select:
 
 ### Console Keyboard Layout and Font
 
-The default is US, so there's no need to change it.
+The default is US, so there was no need to change it, but if needed:
+```
+Available layouts can be listed with:
+
+# localectl list-keymaps
+
+Can change the layout with:
+
+# loadkeys [your layout here]
+```
 
 ### 3.1 Change Font to be larger and more readable
 ```
@@ -55,6 +64,7 @@ The default is US, so there's no need to change it.
 ### Verification of Boot Mode
 
 ```
+Concatenate the UEFI bit
 # cat /sys/firmware/efi/fw_platform_size
 ```
 
@@ -63,24 +73,25 @@ Looking for the return value of `64`, indicating that it booted in 64-bit x64 UE
 ---
 
 ## 4. Network Configuration
+Note: Because this was done in a VM using NAT, the network configuration was automatically configured as an Ethernet connection
 
-Check network connectivity:
 
 ```
+Check network connectivity:
 # ping -c 5 www.google.com
 ```
 
 Should return 5 packets transmitted, 0% packet loss, indicating network connectivity.
 
-Update system clock:
 
 ```
+Update system clock
 # timedatectl set-ntp true
 ```
 
 ---
 
-## 5. Disk Partitioning
+## 5. Disk Partitioning (UEFI with GPT layout on the Installation Guide)
 
 List block devices:
 
@@ -88,7 +99,7 @@ List block devices:
 # lsblk
 ```
 
-Partition the disk:
+Partition the disk (sda):
 
 ```
 # fdisk /dev/sda
@@ -100,29 +111,38 @@ Create GPT table:
 g
 ```
 
-### EFI Partition
+### EFI Partition (sda1)
 
 ```
 n
+default
+default
 +1G
+
 t
 1
 ```
 
-### Swap Partition
+### Swap Partition (sda2)
 
 ```
 n
+default
+default
 +4G
+
 t
 19
 ```
 
-### Root Partition
+### Root Partition (sda3)
 
 ```
 n
-(defaults)
+default
+default
+default (will assign rest of space to this partition)
+
 t
 23
 ```
@@ -138,16 +158,22 @@ w
 ## 6. Formatting Partitions
 
 ```
+The first partition, the EFI system partition, needs the FAT32 file system
 # mkfs.fat -F32 /dev/sda1
+
+Initialize swap space, as the partition does not have a file system
 # mkswap /dev/sda2
+
+The third partition, the Linux root (x86-64), should have the  ext4 file system
 # mkfs.ext4 /dev/sda3
 ```
 
 ---
 
-## 7. Mounting the File System
+## 7. Mounting the File System and Enabling the Swap Partition
 
 ```
+(Pay attention to the order and /mnt vs /mnt/boot. This is likely the cause of the failure in the first attempt.)
 # mount /dev/sda3 /mnt
 # mount --mkdir /dev/sda1 /mnt/boot
 # swapon /dev/sda2
@@ -158,6 +184,7 @@ w
 ## 8. Base System Installation
 
 ```
+Recommended minimum new system installation from scratch.
 # pacstrap -K /mnt base linux linux-firmware nano vim sudo man reflector grub efibootmgr networkmanager dhcp dhcpcd wget git
 ```
 
@@ -168,19 +195,24 @@ w
 ### Fstab
 
 ```
+Generate File System Table
 # genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
 ### Chroot
 
+
 ```
+Changes the root directory for the current running process and its children
 # arch-chroot /mnt
 ```
 
-### Time
+### Time Configuration
 
 ```
-# ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime 
+Symbolic link of the proper timezone to the localtime file
+# ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+Set the system clock
 # hwclock --systohc
 ```
 
@@ -190,7 +222,7 @@ w
 # nano /etc/locale.gen
 ```
 
-Uncomment:
+Uncomment by removing '#'
 
 ```
 #en_US.UTF-8 UTF-8
@@ -199,8 +231,11 @@ Uncomment:
 Then:
 
 ```
+generate locales
 # locale-gen
+Set the default language to US.UTF-8
 # echo "LANG=en_US.UTF-8" > /etc/locale.conf
+Set key map to us
 # echo "KEYMAP=us" > /etc/vconsole.conf
 ```
 
@@ -211,6 +246,7 @@ Then:
 Set hostname:
 
 ```
+Set system name to "atlan"
 # echo atlan > /etc/hostname
 ```
 
