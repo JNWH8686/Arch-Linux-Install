@@ -453,12 +453,14 @@ You now have a functional Arch Linux installation with KDE and Zsh.
 
 ## 17. Difficulties/Questions
 
-| **Issue/Question**           | **Description/Solution**                                                 |
-| ------------------- | --------------------------------------------------------------- |
-| Performance Lag     | Severe lag caused slow input responses.  Got stuck in the partition type menu due to severe input lag. I have not found the cause or solution for this yet  |                        |
-| Mount/Grub Issues   | Likely Caused by incorrect esp `/mnt` vs `/mnt/boot` handling due to chroot-ing in the incorrect order.      |
-| Reflector Timeout   | Mirrorlist generation failed, likely due to network delays.             |
-|How to Customize & Configure the Terminal| Editing ~/.zshrc/ and using alias, PROMPT for coloring, and autoload -Uz \[options...] (I don't know why I made it part blue. Anything in the color blue is nearly unreadable for me)|
+| **Issue/Question** | **Description/Solution** |
+| ------------------- | ------------------------ |
+| I: Performance Lag | Severe lag caused slow input responses. Got stuck in the partition type menu among other menus, or when editing using nano multiple times due to severe input lag, which also significantly slowed down every step of the process. I have not found the cause or solution for this yet. It has to do with the VM and my host machine itself; it has been reduced when in Konsole in KDE. |
+| I: Mount/Grub Issues | Caused by incorrect `esp`, `/mnt` vs `/mnt/boot` handling due to chroot-ing in the incorrect order. Corrected by doing it in the correct order |
+| I: Pacstrap failing | Pacstrap command failing due to attempting to install packages it doesn't have and typos. Corrected by retrying without typos/incorrect packages |
+| I: Reflector Timeout | Mirrorlist generation failed, likely due to network delays. Corrected by trying again at a later time. |
+| Q: How to Customize the terminal | Editing `~/.zshrc/` and using alias, PROMPT for coloring, and `autoload -Uz [options…]`. (I don’t know why I made it part blue — anything in the color blue is nearly unreadable for me.) |
+
 ---
 
 
