@@ -4,13 +4,7 @@
 
 ---
 
-## 1. Introduction
-
-This documentation outlines the process I followed to install and configure **Arch Linux** inside VM Workstation Pro 17.6.4 for CYB-3353-01. This document also serves as a reference for reproducing my setup, if needed, and includes comments on any difficulties encountered.
-
----
-
-## 2. Virtual Machine Setup
+## 1. Virtual Machine Setup
 
 ### Create a New VM in VMware Workstation (Typical Configuration Option)
 
@@ -37,7 +31,7 @@ Now, power on the VM.
 
 ---
 
-## 3. Boot and Initial Configuration
+## 2. Boot and Initial Configuration
 
 When the Arch Linux screen pops up, select:
 
@@ -53,10 +47,10 @@ Available layouts can be listed with:
 
 Can change the layout with:
 
-# loadkeys [your layout here]
+# loadkeys  [layout]
 ```
 
-### 3.1 Change Font to be larger and more readable
+### Change Font to be readable
 ```
 # stefont ter-132b
 ```
@@ -72,7 +66,7 @@ Looking for the return value of `64`, indicating that it booted in 64-bit x64 UE
 
 ---
 
-## 4. Network Configuration
+## 3. Network Configuration
 Note: Because this was done in a VM using NAT, the network configuration was automatically configured as an Ethernet connection
 
 
@@ -91,7 +85,7 @@ Update system clock
 
 ---
 
-## 5. Disk Partitioning (UEFI with GPT layout on the Installation Guide)
+## 4. Disk Partitioning (UEFI with GPT layout on the Installation Guide)
 
 List block devices:
 
@@ -141,7 +135,7 @@ t
 n
 default
 default
-default (will assign rest of space to this partition)
+default (will assign the rest of the space to this partition)
 
 t
 23
@@ -155,7 +149,7 @@ w
 
 ---
 
-## 6. Formatting Partitions
+## 5. Formatting Partitions
 
 ```
 The first partition, the EFI system partition, needs the FAT32 file system
@@ -170,7 +164,7 @@ The third partition, the Linux root (x86-64), should have the  ext4 file system
 
 ---
 
-## 7. Mounting the File System and Enabling the Swap Partition
+## 6. Mounting the File System and Enabling the Swap Partition
 
 ```
 (Pay attention to the order and /mnt vs /mnt/boot. This is likely the cause of the failure in the first attempt.)
@@ -181,16 +175,16 @@ The third partition, the Linux root (x86-64), should have the  ext4 file system
 
 ---
 
-## 8. Base System Installation
+## 7. Base System Installation
 
 ```
 Recommended minimum new system installation from scratch.
-# pacstrap -K /mnt base linux linux-firmware nano vim sudo man reflector grub efibootmgr networkmanager dhcp dhcpcd wget git
+# pacstrap -K /mnt base linux linux-firmware nano vim sudo man reflector grub efibootmgr networkmanager dhcp dhcpcd wget git resolvconf
 ```
 
 ---
 
-## 9. System Configuration
+## 8. System Configuration
 
 ### Fstab
 
@@ -212,7 +206,7 @@ Changes the root directory for the current running process and its children
 ```
 Symbolic link of the proper timezone to the localtime file
 # ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
-Set the system clock
+Set the system hardware clock
 # hwclock --systohc
 ```
 
@@ -222,7 +216,7 @@ Set the system clock
 # nano /etc/locale.gen
 ```
 
-Uncomment by removing '#'
+Uncomment by removing '#' in front of the line
 
 ```
 #en_US.UTF-8 UTF-8
@@ -241,7 +235,7 @@ Set key map to us
 
 ---
 
-## 10. Network Setup
+## 9. Network Setup
 
 Set hostname:
 
@@ -254,22 +248,22 @@ Edit hosts:
 
 ```
 # nano /etc/hosts
+Insert:
 127.0.1.1 atlan
 ```
 
 Enable Network Manager:
 
 ```
-systemctl enable NetworkManager
-pacman -S dhcpcd networkmanager resolvconf
-systemctl enable dhcpcd
-systemctl enable NetworkManager
-systemctl enable systemd-resolved
+# systemctl enable NetworkManager
+# systemctl enable dhcpcd
+# systemctl enable NetworkManager
+# systemctl enable systemd-resolved
 ```
 
 ---
 
-## 11. User Setup
+## 10. User Setup
 
 Set root password:
 
@@ -281,10 +275,16 @@ atlan
 Create users:
 
 ```
+Create user atlan and add them to wheel group and default shell bash
 # useradd -m -G wheel -s /bin/bash atlan
+Set passwd for atlan
 # passwd atlan
+atlan
+Create user codi and add them to wheel group and default shell bash
 # useradd -m -G wheel -s /bin/bash codi
+Set passwd for atlan
 # passwd codi
+codi
 ```
 
 ### Enable Sudo
@@ -293,7 +293,7 @@ Create users:
 # EDITOR=nano visudo
 ```
 
-Uncomment:
+Uncomment by removing '#' in front of the line
 
 ```
 #%wheel ALL=(ALL:ALL) ALL
@@ -301,8 +301,8 @@ Uncomment:
 
 ---
 
-## 12. Bootloader
-Ensure that you are chroot into /mnt or this will not setup properly
+## 11. Bootloader
+Ensure that you are chrooted into /mnt, or this will not function properly and you will experience great pain
 ```
 # grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 # grub-mkconfig -o /boot/grub/grub.cfg
@@ -311,62 +311,67 @@ Ensure that you are chroot into /mnt or this will not setup properly
 Exit and reboot:
 
 ```
+Exit chroot
 # exit
+Unmount partitions recursively under /mnt
 # umount -R /mnt
+Disable swap space
 # swapoff -a
 # reboot
 ```
 
 ---
 
-## 13. Post-Install Configuration
+## 12. Post-Install Configuration
 
-Login and update:
+Update Package Manager
 
 ```
-sudo pacman -Syu
+#sudo pacman -Syu
 ```
 
 Install KDE Plasma:
 
 ```
-sudo pacman -Syu coreutils diffutils plasma-meta sddm dolphin kde-applications konsole xdg-utils
+#sudo pacman -Syu coreutils diffutils plasma-meta sddm dolphin kde-applications konsole xdg-utils
 ```
 
 Enable SSH:
 
 ```
-sudo pacman -S openssh
-sudo systemctl enable sshd --now
+#sudo pacman -S openssh
+#sudo systemctl enable sshd --now
 ```
 
 ---
 
-## 14. Zsh Configuration
+## 13. Zsh Configuration
 
 Install Zsh:
 
 ```
-sudo pacman -S zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting
+#sudo pacman -S zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting
 ```
 
-Enable SDDM:
+Enable SDDM (KDE Graphical Display):
 
 ```
-sudo systemctl enable sddm.service
-sudo systemctl set-default graphical.target
+#sudo systemctl enable sddm.service
+#sudo systemctl set-default graphical.target
 ```
 
 Set Zsh as the default:
 
 ```
-sudo chsh -s /usr/bin/zsh
-exec zsh
+Change the default terminal to zsh
+#sudo chsh -s /usr/bin/zsh
+#exec zsh
 ```
 
 Zsh setup:
 
 ```
+Load defaults for a new user
 % autoload -Uz zsh-newuser-install
 % zsh-newuser-install -f
 ```
@@ -381,7 +386,7 @@ Should show `/usr/bin/zsh`.
 
 ---
 
-## 15. Terminal Customization
+## 14. Terminal Customization
 
 Edit `~/.zshrc`:
 
@@ -421,15 +426,16 @@ alias wget='wget -c'
 Save and reload:
 
 ```
-% source ~/.zshrc
+%source ~/.zshrc
 ```
 
 ---
 
-## 16. Boot into KDE
+## 15. Boot into KDE
 
 ```
-sudo systemctl start sddm
+Start the Graphical Login Manager
+%sudo systemctl start sddm
 ```
 
 Log in and confirm the graphical interface.
@@ -437,22 +443,22 @@ You now have a functional Arch Linux installation with KDE and Zsh.
 
 ---
 
-## 17. Firefox Installation
+## 16. Firefox Installation
 
 ```
-sudo pacman -Syu firefox
+%sudo pacman -Syu firefox
 ```
 
 ---
 
-## 18. Difficulties
+## 17. Difficulties/Questions
 
-| **Issue**           | **Description**                                                 |
+| **Issue/Question**           | **Description/Solution**                                                 |
 | ------------------- | --------------------------------------------------------------- |
 | Performance Lag     | Severe lag caused slow input responses.  Got stuck in the partition type menu due to severe input lag. I have not found the cause or solution for this yet  |                        |
 | Mount/Grub Issues   | Likely Caused by incorrect esp `/mnt` vs `/mnt/boot` handling due to chroot-ing in the incorrect order.      |
 | Reflector Timeout   | Mirrorlist generation failed, likely due to network delays.             |
-
+|How to Customize & Configure the Terminal| Editing ~/.zshrc/ and using alias, PROMPT for coloring, and autoload -Uz \[options...] (I don't know why I made it part blue. Anything in the color blue is nearly unreadable for me)|
 ---
 
 
