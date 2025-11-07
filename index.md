@@ -56,9 +56,8 @@ Can change the layout with:
 ```
 
 ### Verification of Boot Mode
-
-```
 Concatenate the UEFI bit
+```
 # cat /sys/firmware/efi/fw_platform_size
 ```
 
@@ -69,17 +68,15 @@ Looking for the return value of `64`, indicating that it booted in 64-bit x64 UE
 ## 3. Network Configuration
 Note: Because this was done in a VM using NAT, the network configuration was automatically configured as an Ethernet connection
 
-
-```
 Check network connectivity:
+```
 # ping -c 5 www.google.com
 ```
 
 Should return 5 packets transmitted, 0% packet loss, indicating network connectivity.
 
-
-```
 Update system clock
+```
 # timedatectl set-ntp true
 ```
 
@@ -167,7 +164,7 @@ The third partition, the Linux root (x86-64), should have the  ext4 file system
 ## 6. Mounting the File System and Enabling the Swap Partition
 
 ```
-(Pay attention to the order and /mnt vs /mnt/boot. This is likely the cause of the failure in the first attempt.)
+(Pay attention to the order and /mnt vs /mnt/boot. This is likely the cause of the failure of my first attempt.)
 # mount /dev/sda3 /mnt
 # mount --mkdir /dev/sda1 /mnt/boot
 # swapon /dev/sda2
@@ -257,7 +254,6 @@ Enable Network Manager:
 ```
 # systemctl enable NetworkManager
 # systemctl enable dhcpcd
-# systemctl enable NetworkManager
 # systemctl enable systemd-resolved
 ```
 
@@ -432,9 +428,8 @@ Save and reload:
 ---
 
 ## 15. Boot into KDE
-
-```
 Start the Graphical Login Manager
+```
 %sudo systemctl start sddm
 ```
 
