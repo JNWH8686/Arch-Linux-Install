@@ -348,7 +348,7 @@ Enable SSH:
 
 ---
 
-## 13. Zsh Configuration
+## 13. Zsh
 
 Install Zsh:
 
