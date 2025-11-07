@@ -336,6 +336,13 @@ Install KDE Plasma:
 #sudo pacman -Syu coreutils diffutils plasma-meta sddm dolphin kde-applications konsole xdg-utils
 ```
 
+Enable SDDM (KDE Graphical Display):
+
+```
+#sudo systemctl enable sddm.service
+#sudo systemctl set-default graphical.target
+```
+
 Enable SSH:
 
 ```
@@ -351,13 +358,6 @@ Install Zsh:
 
 ```
 #sudo pacman -S zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting
-```
-
-Enable SDDM (KDE Graphical Display):
-
-```
-#sudo systemctl enable sddm.service
-#sudo systemctl set-default graphical.target
 ```
 
 Set Zsh as the default:
@@ -443,13 +443,6 @@ You now have a functional Arch Linux installation with KDE and Zsh.
 
 ---
 
-## 16. Firefox Installation
-
-```
-%sudo pacman -Syu firefox
-```
-
----
 
 ## 17. Difficulties/Questions
 
