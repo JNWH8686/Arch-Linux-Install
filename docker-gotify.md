@@ -1,4 +1,4 @@
-# Docker + Gotify Installation Guide (Ubuntu)
+# Docker + Gotify Installation Guide (Ubuntu VM)
 
 Docker installation wiki: https://docs.docker.com/engine/install/ubuntu/
 
