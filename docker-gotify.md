@@ -57,7 +57,7 @@ sudo docker run hello-world
 ```
 
 # Gotify Installation
- ![https://gotify.net/docs/install](https://gotify.net/docs/install)  
+ [Official instillation page](https://gotify.net/docs/install)  
 **Gotify** is a notification message service.
 
 ### Create Application Directory
