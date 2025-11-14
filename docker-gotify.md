@@ -1,16 +1,6 @@
-
-# Ubuntu VM (VMWare Workstation)
-
-## Docker Installation on Ubuntu
+## Docker + Gotify Installation Guide (Unbunti)
 
 Docker installation wiki: https://docs.docker.com/engine/install/ubuntu/
-
-Update the system:
-
-```bash
-sudo apt-get update
-sudo apt-get upgrade
-```
 
 ### Uninstall Any Potential Conflicting Packages
 
@@ -79,7 +69,7 @@ cd ~/gotify
 
 ### Create `docker-compose.yml`
 
-Use a text editor to create the file with the following content (**change the default passwor**d):
+Use a text editor to create the file with the following content (**change the default password**):
 
 ```yaml
 services:
@@ -151,3 +141,6 @@ curl "http://localhost:8080/message?token=<token>" \
      -F "title=[title]" \
      -F "message=[message]"
 ```
+
+Example result:
+(image placeholder)[]
