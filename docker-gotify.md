@@ -57,7 +57,7 @@ sudo docker run hello-world
 ```
 
 # Gotify Installation
- [https://gotify.net/docs/install](https://gotify.net/docs/install)  
+ ![https://gotify.net/docs/install](https://gotify.net/docs/install)  
 **Gotify** is a notification message service.
 
 ### Create Application Directory
@@ -129,6 +129,9 @@ Default login credentials:
 Username: admin
 Password: <password>
 ```
+You should see an admin account, along with having the ability to create additional accounts with the GUI
+
+[Example Users](https://imgur.com/gQtCRtE)
 
 ### Sending a Message
 
@@ -143,4 +146,4 @@ curl "http://localhost:8080/message?token=<token>" \
 ```
 
 Example result:
-(image placeholder)[]
+[Message Placeholder](https://imgur.com/6u0177J)
