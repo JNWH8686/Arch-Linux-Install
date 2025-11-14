@@ -1,8 +1,9 @@
-# Docker + Gotify Installation Guide (Ubuntu VM)
+# Docker + Gotify Installation Guide (Ubuntu)
 
-Docker installation wiki: https://docs.docker.com/engine/install/ubuntu/
+[Docker installation wiki](https://docs.docker.com/engine/install/ubuntu/)
 
 ### Uninstall Any Potential Conflicting Packages
+
 
 ```bash
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
@@ -10,11 +11,13 @@ for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker c
 
 ### Update Apt
 
+
 ```bash
 sudo apt update 
 ```
 
 ### Set up Docker's `apt` Repository
+
 
 ```bash
 # Add Docker's official GPG key:
@@ -27,6 +30,7 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 
 ### Add the Repository to Apt Sources
 
+
 ```bash
 sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
 Types: deb
@@ -37,11 +41,16 @@ Signed-By: /etc/apt/keyrings/docker.asc
 EOF
 ```
 
-Update Apt again:
+### Update Apt again:
 
 ```bash
 sudo apt update
+
+
 ```
+
+
+
 
 ### Install Docker Packages
 
@@ -57,8 +66,7 @@ sudo docker run hello-world
 ```
 
 # Gotify Installation
- [Official instillation page](https://gotify.net/docs/install)  
-**Gotify** is a notification message service.
+Gotify is a simple notification messaging service. [Official instillation page](https://gotify.net/docs/install)  
 
 ### Create Application Directory
 
@@ -68,7 +76,6 @@ cd ~/gotify
 ```
 
 ### Create `docker-compose.yml`
-
 Use a text editor to create the file with the following content (**change the default password**):
 
 ```yaml
@@ -83,65 +90,55 @@ services:
       TZ: "America/Chicago"
     volumes:
       - "./gotify_data:/app/data"
-    restart: unless-stopped
+    restart: unless-stopped #when VM powers on
 ```
 
 
 Verify the .yml file:
-
 ```bash
 ls docker-compose.yml
 ```
 
-You should see:
 
+You should see:
 ```
 docker-compose.yml
 ```
 
----
 
 ### Start Gotify and have it run in the background in detached mode
-
 ```bash
 sudo docker compose up -d
 ```
 
 Verify that it is running:
-
 ```bash
 sudo docker ps
 ```
-
-
-### Gotify GUI
+## Gotify GUI
 
 Open in a browser:
-
 ```
 http://localhost:8080/
 ```
 
 Default login credentials:
-
 ```
 Username: admin
 Password: <password>
 ```
-You should see an admin account, along with having the ability to create additional accounts with the GUI
 
-[Example](https://imgur.com/gQtCRtE)
-
+You should see an admin account, along with having the ability to create additional accounts with the GUI:
+#### [Example](https://imgur.com/gQtCRtE)
 ### Sending a Message
-
-* Create an application
+* Create an application via the GUI
 * Copy the application token
 
-Send a message:
+Send a message via terminal:
 ```bash
 curl "http://localhost:8080/message?token=<token>" \
      -F "title=[title]" \
      -F "message=[message]"
 ```
 
-[Example result](https://imgur.com/6u0177J)
+#### [Example result](https://imgur.com/6u0177J)
