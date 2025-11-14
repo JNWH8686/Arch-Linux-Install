@@ -86,9 +86,8 @@ services:
     restart: unless-stopped
 ```
 
-Write out and exit
 
-Verify the .yml file exists:
+Verify the .yml file:
 
 ```bash
 ls docker-compose.yml
@@ -131,7 +130,7 @@ Password: <password>
 ```
 You should see an admin account, along with having the ability to create additional accounts with the GUI
 
-[Example Users](https://imgur.com/gQtCRtE)
+[Example](https://imgur.com/gQtCRtE)
 
 ### Sending a Message
 
@@ -145,5 +144,4 @@ curl "http://localhost:8080/message?token=<token>" \
      -F "message=[message]"
 ```
 
-Example result:
-[Message Placeholder](https://imgur.com/6u0177J)
+[Example result](https://imgur.com/6u0177J)
