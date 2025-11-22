@@ -1,21 +1,25 @@
 
 # Digital Ocean Setup & WireGuard Installation
 
-## Create a Digital Ocean Account
-1. Create a new Digital Ocean account and claim a **$200 credit** for two months.  
-   *(Payment method is required to claim credits.)*  
+# Digital Ocean
 
-[Digital Ocean Referral Link](https://www.digitalocean.com/?refcode=d33d59113ab6&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=CopyPaste)
+## Create a Digital Ocean Account
+ Create a new [Digital Ocean](https://www.digitalocean.com/?refcode=d33d59113ab6&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=CopyPaste)
+ account and claim a **$200 credit** for two months.  
+   *(Payment method is required to claim credits once you create the account.)*
+   *Remember to delete your droplet and data before Digital Ocean pocket checks you*  
 
 
 
 ## Create an Ubuntu 24.04 Droplet
 
-Go to **Droplet > Create Droplets** and select:
+Go to **Droplet > Create Droplets** 
 
 ## Droplet configuration
-Region: Atlanta
+Region: Atlanta (Closest Location)
+
 Datacenter: Atlanta Datacenter 1 (ATL1)
+
 VPC Network: default-atl1
 
 ## Operating System
@@ -44,7 +48,6 @@ Choose **Password** and create a root password:
 ### Update & Upgrade Packages
 
 ```bash
-# Update package lists and upgrade installed packages
 sudo apt update && sudo apt upgrade -y
 ```
 
@@ -52,12 +55,11 @@ sudo apt update && sudo apt upgrade -y
 
 ## Docker Installation
 
-Refer to the [Docker Installation Wiki](https://docs.docker.com/engine/install/ubuntu/) or [Docker-Gotify Instillation Guide](https://jnwh8686.github.io/Arch-Linux-Install/docker-gotify)
+Refer to the [Official Docker Installation Wiki](https://docs.docker.com/engine/install/ubuntu/) or [Docker section of my Docker-Gotify Instillation Guide](https://jnwh8686.github.io/Arch-Linux-Install/docker-gotify)
 
 ### Remove Potential Conflicting Packages
 
 ```bash
-# Remove older Docker, Podman, or container runtime packages
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
     sudo apt-get remove $pkg
 done
@@ -66,14 +68,11 @@ done
 ### Set Up Docker's `apt` Repository
 
 ```bash
-# Install prerequisites
 sudo apt-get update
 sudo apt-get install ca-certificates curl -y
 
-# Prepare keyrings folder
 sudo install -m 0755 -d /etc/apt/keyrings
 
-# Add Docker's official GPG key
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 ```
@@ -105,7 +104,7 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 ### Verify Docker Installation
 
 ```bash
-# Test Docker installation
+# Test Docker installation functionality
 sudo docker run hello-world
 ```
 
@@ -198,9 +197,9 @@ docker ps
 
 ## Access WireGuard Web UI
 
-1. Open: `http://<Droplet_Public_IP>:51821`
+Open: `http://<Droplet_Public_IP>:51821`
     
-2. Complete initial setup:
+Complete initial setup:
     
     - Set **Admin Username** & **Password**
         
@@ -208,42 +207,46 @@ docker ps
         
     - Port: 51820
         
-3. Create a new client for VPN access.
+Create a new client for VPN access.
     
 
-## Testing
+## Testing with [IpLeak.net](https://ipleak.net/)
 
 ### Mobile (iOS)
 
-1. Download **WireGuard** from the App Store.
+* Download **WireGuard** from the App Store.
     
-2. Show the QR code in Web UI and scan it.
+* Show the QR code in Web UI and scan it with your phone camera.
     
-3. Connect/Create VPN in device settings.
+* Connect/Create VPN in device settings.
     
 
-_Add screenshots here._
+[IOS WireGuard Demo (off)](https://imgur.com/ydpGoXa)
+
+[IOS WireGuard Demo (on)](https://imgur.com/aYRFqu6)
 
 ### Laptop (Windows)
 
-1. Download the `.conf` file from the new client.
+* Download the `.conf` file from the new client.
     
-2. Install **WireGuard for Windows**.
+* Install **WireGuard for Windows**.
     
-3. Import the `.conf` file and activate the tunnel.
+* Import the `.conf` file and activate the tunnel.
     
 
-_Add screenshots here._
+[Windows Laptop WireGuard Demo](https://i.imgur.com/i50FnhB.png)
 
-### Notes & Tips
+---
+
+### Notes
 
 ```bash
-# Check container logs if there are issues
+# Check container logs if there are issues and follow the link displayed. Most likely the issue is with the environment of the .yaml file
 docker logs wg-easy
 
 # Ensure firewall allows:
 # UDP port 51820
 # TCP port 51821
-# if not set to insecure you need another docker container to set up password hash
-# consult wiki for reverse process setup
+# if not set to insecure in the .yaml file, you need another Docker container to set up a password hash
+# consult wiki for reverse proxy setup
 ```
