@@ -231,7 +231,7 @@ Create a new client for VPN access.
     
 * Install **WireGuard for Windows**.
     
-* Import the `.conf` file and activate the tunnel.
+* Import the `.conf` file into the desktop application and activate the tunnel.
     
 
 [Windows Laptop WireGuard Demo](https://i.imgur.com/i50FnhB.png)
