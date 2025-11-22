@@ -215,7 +215,7 @@ Create a new client for VPN access.
 
 ### Mobile (iOS)
 
-* Download **WireGuard** from the App Store.
+* Download [**WireGuard](https:/apps.apple.com/us/app/wireguard/id1441195209)** from the App Store.
     
 * Show the QR code in Web UI and scan it with your phone camera.
     
@@ -230,9 +230,9 @@ Create a new client for VPN access.
 
 * Download the `.conf` file from the new client.
     
-* Install **WireGuard for Windows**.
+* Install **[WireGuard for Windows](https://www.wireguard.com/install/)**.
     
-* Import the `.conf` file into the desktop application and activate the tunnel.
+* Import the `.conf` file and activate the tunnel.
     
 
 [Windows Laptop WireGuard Demo](https://i.imgur.com/i50FnhB.png)
